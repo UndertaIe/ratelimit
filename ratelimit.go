@@ -164,6 +164,16 @@ func NewBucketWithQuantumAndClock(fillInterval time.Duration, capacity, quantum 
 	}
 }
 
+func (tb *Bucket) Reset(fillInterval time.Duration, capacity, quantum int64) *Bucket {
+	tb.startTime = tb.clock.Now()
+	tb.latestTick = 0
+	tb.fillInterval = fillInterval
+	tb.capacity = capacity
+	tb.quantum = quantum
+	tb.availableTokens = capacity
+	return tb
+}
+
 // Wait takes count tokens from the bucket, waiting until they are
 // available.
 func (tb *Bucket) Wait(count int64) {
