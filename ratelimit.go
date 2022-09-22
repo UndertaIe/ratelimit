@@ -174,6 +174,12 @@ func (tb *Bucket) Reset(fillInterval time.Duration, capacity, quantum int64) *Bu
 	return tb
 }
 
+func (tb *Bucket) IdleTime(fillInterval time.Duration, capacity, quantum int64) time.Duration {
+	busyTime := time.Duration(tb.latestTick) * tb.fillInterval
+	return tb.clock.Now().Sub(tb.startTime) - busyTime
+
+}
+
 // Wait takes count tokens from the bucket, waiting until they are
 // available.
 func (tb *Bucket) Wait(count int64) {
